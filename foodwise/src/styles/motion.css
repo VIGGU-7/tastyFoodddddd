@@ -1,0 +1,127 @@
+.skeleton {
+  border-radius: 14px;
+  background: linear-gradient(100deg, #e9eee1 20%, #f4f7ef 45%, #e9eee1 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+.skeleton-title {
+  width: 40%;
+  height: 37px;
+  margin: 20px 0;
+}
+.skeleton-text {
+  width: 70%;
+  height: 15px;
+  max-width: 400px;
+}
+.skeleton-hero {
+  height: 360px;
+  margin-top: 35px;
+}
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-top: 25px;
+}
+.skeleton-grid > div {
+  height: 180px;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+.route-transition {
+  animation: enter 0.4s ease-out;
+}
+.scan-result-enter {
+  animation: enter 0.45s ease-out;
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -47%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 0 20px #e6eed91a;
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes scan {
+  0%,
+  100% {
+    top: 10%;
+  }
+  50% {
+    top: 90%;
+  }
+}
+@keyframes bowl-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -9px;
+  }
+}
+@keyframes leaf-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 4px -10px;
+    rotate: 10deg;
+  }
+}
+@keyframes chip-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+@keyframes auth-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}

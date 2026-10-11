@@ -1,0 +1,18 @@
+{
+  "source": "https://static.openfoodfacts.org/data/openfoodfacts-products.jsonl.gz",
+  "license": "ODbL-1.0",
+  "extractedAt": "2026-10-11T17:19:18.233356+00:00",
+  "selection": "Complete records from a byte prefix of the public dump; deduplicated complete nutrition and 2023 labels. This is not a random or globally representative sample.",
+  "compressedPrefixBytes": 15014391,
+  "compressedPrefixSha256": "53a35f60c3cd68fc847a9cb14bc967a513ffb6e51e86a68d61e8f504ce582d1f",
+  "completeSourceRecords": 3732,
+  "eligibleProducts": 1479,
+  "gradeCounts": {
+    "d": 271,
+    "e": 540,
+    "a": 298,
+    "b": 148,
+    "c": 222
+  },
+  "sampleSha256": "54c1066b909252ab37d70bf7443d6257c290828c14ebb0cf1a96fbb70d7a54b1"
+}

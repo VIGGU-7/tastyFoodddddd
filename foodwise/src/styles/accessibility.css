@@ -1,0 +1,132 @@
+/* Readable secondary text across the light surfaces; measured with axe/WCAG AA. */
+:root {
+  --muted: #5f6c59;
+}
+.eyebrow,
+.breadcrumb > span,
+.date-note,
+.hero-proof,
+.step-number,
+.section-title h2 > span,
+.small-tag,
+.scale-labels,
+.grade-guide-visual > p,
+.quick-scan-card .eyebrow,
+.trust-row,
+.app-footer,
+.divider-label,
+.field-hint,
+.sample-barcode,
+.fine-print,
+.auth-tabs > a,
+.form-field > label > span,
+.story-topline,
+.story-bottom,
+.scene-smallprint,
+.scene-caption,
+.score-footnote,
+.source-pill,
+.product-result-title > span:last-child,
+.optional-note,
+.step-content legend > span,
+.onboarding-steps button,
+.summary-panel dt,
+.privacy-note,
+.limit-heading span,
+.context-pills > span,
+.results-count,
+.filter-tabs button,
+.food-card-meta,
+.food-card-nutrients > span,
+.food-card-bottom > span,
+.activity-right time,
+.metrics-table caption,
+.metrics-table thead th,
+.check-list,
+.mobile-nav a,
+.nutrient-list dd > .missing-value {
+  color: #5b6c50;
+}
+.hero-copy > p,
+.member-prompt p,
+.member-welcome p,
+.setup-banner p,
+.auth-story > p {
+  color: #56664c;
+}
+.dataset-split > span,
+.dataset-split > span:nth-child(2) {
+  color: #526a3b;
+}
+.dataset-split > span:nth-child(3),
+.model-limit-note p {
+  color: #766039;
+}
+.model-hero .eyebrow {
+  color: #bfd5a3;
+}
+.model-hero p {
+  color: #bdcdb0;
+}
+.model-accuracy > p {
+  color: #b6cba2;
+}
+.onboarding-steps .active {
+  color: #365829;
+}
+.onboarding-steps .complete {
+  color: #446a32;
+}
+.fit-good {
+  color: #42622d;
+}
+.fit-limit {
+  color: #77511d;
+}
+.fit-unknown {
+  color: #5b6c4c;
+}
+.food-card-bottom > button {
+  color: #536c38;
+}
+.auth-story ul {
+  color: #526b43;
+}
+.source-pill {
+  color: #536a40;
+}
+.modal-content .checkbox-line {
+  color: #536547;
+}
+@media (pointer: coarse) {
+  .food-card-bottom > button,
+  .sample-barcode button,
+  .danger-link {
+    min-height: 44px;
+  }
+  .text-link,
+  .signin-link,
+  .back-link {
+    min-height: 32px;
+  }
+}
+.recommendation-footnote > div > strong {
+  color: #4f673d;
+}
+.panel.profile-panel {
+  padding: 0;
+}
+.choice-chip,
+.stat-card strong span,
+.reason-list li > span,
+.nutrient-list dt,
+.unit-input > span {
+  color: #53664a;
+}
+.danger-link {
+  color: #884c40;
+}
+.score-orb.grade-e {
+  background: #a94f45;
+}
+.allergen-chip{color:#78502c}

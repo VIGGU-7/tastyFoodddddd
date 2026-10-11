@@ -1,10 +1,10 @@
 require("./register.cjs");
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { assess, rank, glucoseMgDl } = require("../lib/food/engine.ts");
-const { emptyProfile } = require("../lib/food/types.ts");
-const { normalizeProduct } = require("../lib/food/products.ts");
-const { predictGrade } = require("../lib/food/model.ts");
+const { assess, rank, glucoseMgDl } = require("../src/features/nutrition/domain/engine.ts");
+const { emptyProfile } = require("../src/features/nutrition/domain/types.ts");
+const { normalizeProduct } = require("../src/features/nutrition/domain/products.ts");
+const { predictGrade } = require("../src/features/nutrition/domain/model.ts");
 const food = {
   id: "one",
   name: "Test meal",
@@ -153,7 +153,7 @@ test("negative nutrient data is treated as missing", () =>
       .sugar,
     undefined,
   ));
-test("untrained artifact produces no invented grade", () =>
+test("missing model inputs produce no invented grade", () =>
   assert.equal(predictGrade({}, "unknown"), null));
 test("invalid negative serving size cannot create negative nutrient values", () => {
   const f = normalizeProduct(
@@ -162,4 +162,13 @@ test("invalid negative serving size cannot create negative nutrient values", () 
   );
   assert.equal(f.nutrients.sugar, 10);
   assert.equal(f.grams, 100);
+});
+
+test("model category selection matches training preprocessing", () => {
+  const { modelCategory } = require("../src/features/nutrition/domain/model.ts");
+  assert.equal(
+    modelCategory(["fr:test", "en:nutrition-grade-a", "en:snacks"]),
+    "en:snacks",
+  );
+  assert.equal(modelCategory(null), "unknown");
 });

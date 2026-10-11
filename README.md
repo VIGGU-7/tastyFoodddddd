@@ -1,7 +1,7 @@
-# Food recommendation system
+# Foodwise
 
-The application is in [foodwise/](foodwise/README.md).
+The Next.js and React application is in [foodwise/](foodwise/README.md).
 
-It includes the mobile-friendly Foodwise website, barcode lookup and assessments, health/taste profiles, glucose journaling, preference ratings, account-scoped API/storage, sourced meal/menu references, and a reproducible ML training pipeline.
+Guests can scan food barcodes and see a nutrition score and explanation. Signed-in users can save preferences, receive recommendations, rate tried foods, and keep a food/glucose journal.
 
-See the application README for setup, tests, and current environment blockers. The ML artifact is untrained; production deployment has not been verified.
+See the application README for setup, architecture, model evaluation, and local verification. Tests and private/generated files are excluded from Git. GitHub publication is on hold at the user’s request.

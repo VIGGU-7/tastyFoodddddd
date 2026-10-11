@@ -1,0 +1,119 @@
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+.detail-explanation {
+  margin-top: 24px;
+}
+.detail-explanation h2 {
+  font-size: 24px;
+  font-weight: 550;
+  margin: 12px 0;
+}
+.detail-explanation > p {
+  font-size: 12px;
+}
+.reason-list {
+  list-style: none;
+  margin: 23px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 17px;
+}
+.reason-list li {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #65735b;
+}
+.reason-list li > span {
+  font-size: 10px;
+  color: #98a38e;
+  padding-top: 1px;
+}
+.nutrient-panel > p {
+  font-size: 11px;
+  margin-top: -10px;
+}
+.nutrient-list {
+  margin: 20px 0;
+}
+.nutrient-list > div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #edf0e7;
+  padding: 12px 0;
+}
+.nutrient-list dt {
+  font-size: 11px;
+  color: #6f7c62;
+}
+.nutrient-list dd {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+.nutrient-list dd > span {
+  font-size: 10px;
+  font-weight: 400;
+  margin-left: 5px;
+}
+.nutrient-list dd > .missing-value {
+  color: #929b87;
+  font-size: 10px;
+  font-style: italic;
+}
+.nutrient-panel > .fine-print {
+  margin: 0;
+  font-size: 10px;
+}
+.ingredient-panel {
+  margin-top: 23px;
+}
+.ingredient-panel h2 {
+  font-size: 17px;
+  margin-bottom: 13px;
+}
+.ingredient-panel p {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.chip-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+.allergen-chip {
+  background: #fbebde;
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: #987146;
+  font-size: 10px;
+}
+.ingredient-panel .fine-print {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  font-size: 10px;
+}
+.ingredient-panel .fine-print svg {
+  margin-top: 2px;
+}
+.source-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin: 25px 0;
+}
+.source-panel h3 {
+  font-size: 20px;
+  font-weight: 550;
+  margin: 9px 0;
+}
+.source-panel p {
+  font-size: 11px;
+  max-width: 620px;
+}

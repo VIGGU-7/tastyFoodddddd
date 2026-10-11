@@ -64,7 +64,7 @@ def main():
         t=estimator.tree_;prob=t.value[:,0,:];prob=prob/prob.sum(axis=1,keepdims=True)
         trees.append({'left':t.children_left.tolist(),'right':t.children_right.tolist(),'feature':t.feature.tolist(),'threshold':t.threshold.tolist(),'probabilities':prob.tolist()})
     artifact={'status':'trained','version':'off-2023-'+digest.hexdigest()[:12],'metrics':metrics,'classes':best.classes_.tolist(),'features':FEATURES,'categories':categories,'trees':trees}
-    target=Path(__file__).resolve().parents[1]/'lib/food/model-artifact.json'
+    target=Path(__file__).resolve().parents[1]/'src/features/nutrition/domain/model-artifact.json'
     # Verify exported inference parity against sklearn before shipping.
     for idx in test[:200]:
         probs=np.zeros(len(best.classes_))
@@ -73,6 +73,10 @@ def main():
             while t['left'][node]!=-1:node=t['left'][node] if x[idx][t['feature'][node]]<=t['threshold'][node] else t['right'][node]
             probs+=np.array(t['probabilities'][node])/len(trees)
         assert best.classes_[np.argmax(probs)]==best.predict(x[idx:idx+1])[0]
+    fixtures=[{'nutrients':dict(zip(FEATURES,records[int(idx)]['x'])),'category':records[int(idx)]['category'],'expected':str(best.predict(x[idx:idx+1])[0])} for idx in test[:200]]
+    Path(__file__).with_name('parity-fixtures.json').write_text(json.dumps(fixtures,separators=(',',':'))+'\n')
+    manifest=Path(__file__).with_name('snapshot.json')
+    if manifest.exists():metrics['snapshot']=json.loads(manifest.read_text())
     target.write_text(json.dumps(artifact,separators=(',',':'))+'\n')
     Path(__file__).with_name('metrics.json').write_text(json.dumps(metrics,indent=2)+'\n')
     print(json.dumps(metrics,indent=2))

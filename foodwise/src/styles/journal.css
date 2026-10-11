@@ -1,0 +1,135 @@
+.journal-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 30px;
+}
+.stat-card {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 24px;
+}
+.stat-icon {
+  background: #edf3e2;
+  color: #768e56;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+}
+.stat-card strong {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 30px;
+  font-family: Manrope, sans-serif;
+  font-weight: 550;
+}
+.stat-card strong span {
+  font-size: 11px;
+  color: #758367;
+  font-weight: 400;
+}
+.stat-card p {
+  font-size: 10px;
+  margin-top: 4px;
+}
+.journal-tabs {
+  width: fit-content;
+  margin-bottom: 18px;
+}
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.activity-list > li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 22px 0;
+  border-bottom: 1px solid #edf0e7;
+}
+.activity-list > li:last-child {
+  border: 0;
+}
+.activity-icon {
+  display: grid;
+  place-items: center;
+  background: #edf2e4;
+  color: #718950;
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  flex-shrink: 0;
+}
+.activity-rating {
+  background: #faf1df;
+  color: #b8984e;
+}
+.activity-glucose {
+  background: #e7f0f0;
+  color: #6f9496;
+}
+.activity-list > li > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.activity-list .eyebrow {
+  font-size: 10px;
+}
+.activity-list strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+  margin: 5px 0;
+}
+.activity-list p {
+  font-size: 10px;
+}
+.activity-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.activity-right time {
+  font-size: 10px;
+  color: #8f9a82;
+}
+.activity-right a {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e5ebdd;
+  border-radius: 50%;
+  color: #79925f;
+}
+.journal-context {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 25px;
+  margin-top: 25px;
+  background: #edf2e6;
+  border-radius: 16px;
+}
+.journal-context > span {
+  color: #7d9562;
+}
+.journal-context h3 {
+  font-size: 15px;
+  font-weight: 550;
+  margin-bottom: 8px;
+}
+.journal-context p {
+  font-size: 10px;
+  max-width: 750px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}

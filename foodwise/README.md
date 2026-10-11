@@ -1,55 +1,80 @@
 # Foodwise
 
-Mobile-friendly food discovery and barcode assessment website. Source lives in `foodwise/` within the shared workspace.
+A Next.js App Router application with a React interface and Node backend. Guests can scan products, see an A–E nutrition score and one-line assessment, and open a separate explanation. Personal recommendations, profiles, ratings, and journal records require a signed-in account.
 
-## Included
+## Run
 
-- Guest scanning and optional health/taste onboarding; camera decoding uses the browser BarcodeDetector API with manual entry as the fallback.
-- One-line Good fit / Limit / Avoid / Not enough information results, plus a separate `/why` explanation screen.
-- Open Food Facts lookup, conservative ingredient/allergen checks, per-serving nutrient limits, source-grade precedence, and a 24-hour product cache.
-- Account-scoped profiles, ratings, scans, and optional glucose journal using Sites authentication and D1. Guest preferences remain on-device; guests explicitly save their profile after sign-in to transfer it.
-- Sourced recipe and restaurant-menu references. Unpublished nutrition stays unknown. Restaurant city filters are curated references, not live nearby availability.
-- Taste ranking from cuisine/food preferences and optional 1–5 ratings after users confirm they tried a food. Restrictions take precedence.
-- Offline random-forest training pipeline and TypeScript tree inference; see [ml/README.md](ml/README.md).
-
-## Run locally
-
-Requires **Node 22.13+**, npm, and internet access for initial dependency installation.
+Use **Node 22.13 or newer** (Node 22.23.3 was validated).
 
 ```sh
-npm install
-npm run build
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --persist-to .wrangler/state --config dist/server/wrangler.json --file drizzle/0000_foodwise.sql
+npm ci
 npm run dev
 ```
 
-Apply the initial migration only once per local database. For later schema edits, run `npm run db:generate`, review the generated migration, and apply only pending migrations. The initial migration and snapshot were authored locally because drizzle-kit installation was unavailable; reconcile them with the generator before the first production publication.
-
-Local Sites preview uses the starter's mock authentication. Hosted identity is supplied by Sites; do not replace it with client-supplied IDs or deploy the app behind a proxy that accepts arbitrary identity headers. Private publication requires platform sign-in; anonymous access becomes possible only after an explicit audience change. No third-party API key is required for barcode lookup.
+Open `http://localhost:3000`. If another development server occupies that port, stop it or use `npm run dev -- --port 3001`.
 
 ```sh
-npm test
+npm run lint
 npm run typecheck
+npm run build
+npm start
 ```
 
-## ML status
+The database is initialized automatically at `data/foodwise.sqlite`. Set `FOODWISE_DATABASE_PATH` to an absolute path to use a different persistent disk. No API key is needed for Open Food Facts lookup. HTTPS is required for cameras outside localhost; manual barcode entry always remains available.
 
-The checked-in model artifact is **untrained**. No accuracy is claimed. The actual source nutrition grade is used when supplied by Open Food Facts. Running the documented training pipeline generates the model and genuine held-out metrics automatically; rebuild and publish afterward.
+## Structure
 
-Blood glucose readings include value, units, time, and meal context. They are recorded as context, not used to diagnose, generate treatment targets, or predict glucose response. Use your own care-plan nutrient limits. A nutrition grade does not establish food safety.
+```text
+src/
+  app/                  Next.js pages, layouts, and focused API routes
+  components/
+    layout/             Responsive app shell and navigation
+    ui/                 Shared controls, feedback, and accessible dialogs
+  features/
+    auth/               Sign-in and registration
+    discovery/          Overview, 3D food scene, cards, and recommendations
+    scanner/            Barcode interface and camera lifecycle
+    profile/            Three-step preferences and account controls
+    journal/            Scans, taste notes, and glucose journal
+    nutrition/
+      domain/           Assessment rules, catalog, model, and data normalization
+  server/
+    db/                 SQLite initialization
+    repositories/       Account-scoped persistence and public product cache
+    services/           Authentication, sessions, scanning, and recommendation logic
+    http/               Request limits, validation errors, and response helpers
+  shared/               Typed API contracts and client
+  styles/               Theme, feature styles, motion, responsive layout, accessibility
+ml/                     Offline training pipeline, metrics, and provenance
+public/                 Public assets
+```
 
-## Data and privacy
+## Access and data
 
-Accounts use the platform identity as the owner of every personal database record; request bodies cannot select another account. Health fields are optional. Deletion removes the current user's account records and device-local Foodwise records. The shared barcode cache contains only public product data. Personal API responses use `Cache-Control: no-store`.
+Passwords are salted and hashed with scrypt. Sessions use random tokens; only token hashes are stored in SQLite. Cookies are HttpOnly, SameSite=Lax, and Secure for HTTPS requests. Login attempts are rate limited by account identifier. Every personal query uses the authenticated account owner. Request bodies cannot select another owner. Deleting an account cascades to its sessions and personal records.
 
-Recipes link to MedlinePlus/Food Hero, Nutrition.gov, and Illinois Extension; restaurant entries link to official menu references. Verify current ingredients, cross-contact, and serving sizes with the source. Recipe numbers describe the linked formulation and are estimates; photographs are illustrative.
+Guests receive general nutrition information and no personal recommendations. `/recommendations`, `/profile`, and `/journal` enforce authentication on both the server pages and APIs. Public barcode data is cached for 24 hours. Personal API responses use `Cache-Control: no-store`.
 
-Open Food Facts data is available under [ODbL](https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/); retain attribution and applicable share-alike obligations. Product images retain their own licenses. Illustrative discovery photographs link to Unsplash.
+Use a Node hosting environment with a persistent writable disk and HTTPS. This application is no longer a Vite/Vinext or Cloudflare D1 build. The previous Sites registration remains local and excluded from Git. Do not deploy this SQLite setup to ephemeral serverless storage without changing the repository adapter.
 
-## Verification and remaining environment blockers
+## Nutrition model
 
-Behavior tests cover allergy overrides, missing data, serving conversions, taste feedback, glucose validation, account isolation, cache behavior, and lookup failures. Migration SQL is checked against SQLite. All seven application views were rendered using locally available React packages; application TypeScript was checked using cached dependency types.
+The preliminary random forest was trained on **1,479 real Open Food Facts products**, using 2023 nutrition-grade labels. Held-out accuracy is **75.0%** on 156 products; macro F1 is **0.640**, compared with **46.8%** majority-class accuracy. The brand/category groups are separate across 938 training, 385 validation, and 156 test products.
 
-Full dependency installation and the Vinext production build are blocked in this workspace by unavailable packages and DNS/network restrictions. The active Node version is 20, below the starter's required version. Browser camera QA, real Open Food Facts lookup, training/evaluation, generated migration reconciliation, and hosted deployment remain unverified until these prerequisites are available. Do not interpret the source implementation as a completed production deployment.
+The data is a biased prefix sample of a public export. Grade B F1 is only 0.261 on 11 examples. Metrics describe nutrition-grade agreement, not clinical safety. Source grades take precedence; missing numeric inputs produce no estimate. See [ml/README.md](ml/README.md), `ml/metrics.json`, and `ml/snapshot.json`.
 
-The private Site is registered in `.openai/hosting.json`. Source synchronization was attempted but failed because `git.chatgpt-team.site` could not be resolved. Reuse that existing project ID when resuming; do not create another Site.
+Recipes and menu references link to their primary sources. Unknown nutrition stays unknown. Restaurant entries are curated references, not live nearby availability. Glucose readings are optional context and do not predict glucose response or establish food safety.
+
+Open Food Facts data is attributed under [ODbL 1.0](https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/). Retain applicable attribution and share-alike obligations. Product images retain their licenses; other food photographs are illustrative Unsplash images.
+
+## Local verification and Git hygiene
+
+Tests and browser QA scripts are kept locally in `tests/` and excluded from Git, as requested. Test artifacts, databases, downloaded datasets, credentials, environment files, dependency folders, and generated builds are also ignored. The model parity fixtures are local-only; the training script regenerates them.
+
+Local tests can be run with `npm test` when the ignored test directory is present. A fresh GitHub clone contains the application and training source, not local QA files. No GitHub push has been performed.
+
+## Validation
+
+The Next.js production build, TypeScript checks, and ESLint pass. API and browser flow checks were also run against the production server. Local verification includes 22 nutrition/model checks, 27 live API integration checks, and 25 browser flow checks. The browser flows exercise guest scoring, a separate explanation, sign-up/sign-in, onboarding, allergy exclusions, search, ratings, saved scans, glucose records, sign-out, and deletion.
+
+Desktop and mobile layouts were inspected, including 320px and 390px widths. Automated accessibility checks cover public/member pages, preference steps, and the journal dialog; keyboard focus containment and reduced-motion behavior are checked. Camera permission-denied recovery is verified; physical camera/barcode capture still needs a real device. See [architecture and HCI decisions](docs/architecture.md).
