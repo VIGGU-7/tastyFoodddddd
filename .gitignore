@@ -1,41 +1,62 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
+# Dependencies and generated output
+/node_modules/
 /.next/
 /out/
+/dist/
+/build/
+/coverage/
+/.cache/
+/.turbo/
+/.vercel/
+/*.tsbuildinfo
+/next-env.d.ts
 
-# production
-/build
+# Local tests and QA artifacts (kept off GitHub)
+/tests/
+/__tests__/
+/e2e/
+**/*.test.*
+**/*.spec.*
+/playwright-report/
+/test-results/
+/htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+/ml/parity-fixtures.json
 
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
+# Runtime state, private data, and secrets
+/data/
+/.wrangler/
+/.vinext/
+/.sites-runtime/
+/.openai/
+/.agents/
+/.codex/
+/.aws/
+/.venv/
 .env*
+!.env.example
+*.pem
+*.key
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+/ml/data/
+__pycache__/
+*.pyc
+*.pyo
 
-# vercel
-.vercel
+# Local artifacts and editor files
+/outputs/
+/work/
+.DS_Store
+*.log
+.vscode/
+.idea/
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Auto-generated local agent instructions
+/AGENTS.md
+/CLAUDE.md

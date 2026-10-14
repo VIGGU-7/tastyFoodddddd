@@ -1,7 +1,7 @@
 # Nutrition-grade model
 
 The nutrition-grade pipeline is independent of personalization. To rebuild the separate
-content recommendation model, run `npm run train:recommendations` from `foodwise`.
+content recommendation model, run `npm run train:recommendations` from the repository root.
 It fits a TF-IDF vocabulary on public catalog descriptions and writes only
 `src/features/nutrition/domain/recommendation-artifact.json`. The version includes a
 catalog digest, and repeated training on unchanged data is deterministic.
