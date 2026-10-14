@@ -61,6 +61,7 @@
 }
 .filter-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
   padding: 4px;
   background: #edf1e6;
@@ -217,6 +218,63 @@
   line-height: 1.7;
   margin-top: 10px;
   flex: 1;
+}
+.recommendation-reasons {
+  padding: 12px 12px 12px 26px;
+  margin: 12px 0 0;
+  border-radius: 10px;
+  background: #f3f6ee;
+  color: #536347;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.alternatives-panel {
+  margin: 24px 0;
+  background: linear-gradient(135deg, #f3f7ec, #fff);
+}
+.alternatives-panel h2 {
+  font-size: 24px;
+  margin: 10px 0 14px;
+}
+.alternatives-panel > p {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.alternative-list {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.alternative-list li {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.alternative-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.alternative-list p {
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.alternative-list small {
+  color: #65735b;
+}
+.explanation-sources {
+  padding-left: 18px;
+  margin-top: 24px;
+  font-size: 11px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.explanation-sources a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .food-card-nutrients {
   display: flex;

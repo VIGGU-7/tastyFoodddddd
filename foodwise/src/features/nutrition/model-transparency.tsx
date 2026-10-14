@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { PageHeading, SectionTitle } from "@/components/ui/primitives";
 import metrics from "../../../ml/metrics.json";
+import { recommendationModel } from "./domain/recommendation-model";
 
 export function ModelTransparency() {
   const grades = ["a", "b", "c", "d", "e"] as const;
@@ -192,6 +193,29 @@ export function ModelTransparency() {
             </ul>
           </section>
         </div>
+      </section>
+      <section className="panel alternatives-panel">
+        <span className="eyebrow">A SEPARATE MODEL FOR YOUR TASTES</span>
+        <h2>How your picks and alternatives work</h2>
+        <p>
+          The recommendation model learns word importance from{" "}
+          {recommendationModel.documents} public food descriptions. It compares
+          foods with your saved tastes and tried-food ratings, after checking
+          recorded restrictions and nutrient limits. Your own scanned products
+          can also become candidates. It never changes the nutrition-grade
+          model.
+        </p>
+        <p>
+          Alternatives need a similar category or main ingredient, sufficient
+          label data, and an explained improvement. Nutrient comparisons use 100
+          g quantities. The small catalog means a suitable swap may be
+          unavailable. Preference accuracy has not been measured on held-out
+          user ratings.
+        </p>
+        <span className="model-version">
+          <GitBranch size={14} />
+          {recommendationModel.version}
+        </span>
       </section>
       <section className="panel privacy-panel">
         <div>

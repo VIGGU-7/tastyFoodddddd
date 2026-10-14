@@ -27,9 +27,12 @@ export type Food = {
   dietVerified?: boolean;
   serving: string;
   grams?: number;
+  /** False when nutrition uses a 100 g fallback rather than a known serving. */
+  servingKnown?: boolean;
   nutrients: {
     energy?: number;
     sugar?: number;
+    addedSugar?: number;
     carbs?: number;
     sodium?: number;
     saturatedFat?: number;
@@ -65,6 +68,7 @@ export type Assessment = {
   details: string[];
   personalized: boolean;
   modelVersion?: string;
+  references?: { label: string; url: string }[];
 };
 export const emptyProfile: Profile = {
   name: "",

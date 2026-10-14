@@ -53,6 +53,7 @@ export function Recommendations({
         (item) =>
           (tab === "All picks" ||
             (tab === "Meals" && item.food.kind === "meal") ||
+            (tab === "Products" && item.food.kind === "product") ||
             (tab === "Restaurant menus" && item.food.kind === "restaurant")) &&
           `${item.food.name} ${item.food.cuisine} ${item.food.ingredients.join(" ")}`
             .toLowerCase()
@@ -148,21 +149,23 @@ export function Recommendations({
             role="group"
             aria-label="Filter food ideas"
           >
-            {["All picks", "Meals", "Restaurant menus"].map((value) => (
-              <button
-                key={value}
-                aria-pressed={tab === value}
-                className={tab === value ? "active" : ""}
-                onClick={() => setTab(value)}
-              >
-                {value === "All picks" ? (
-                  <Compass size={15} />
-                ) : value === "Meals" ? (
-                  <Utensils size={15} />
-                ) : null}
-                {value}
-              </button>
-            ))}
+            {["All picks", "Meals", "Products", "Restaurant menus"].map(
+              (value) => (
+                <button
+                  key={value}
+                  aria-pressed={tab === value}
+                  className={tab === value ? "active" : ""}
+                  onClick={() => setTab(value)}
+                >
+                  {value === "All picks" ? (
+                    <Compass size={15} />
+                  ) : value === "Meals" ? (
+                    <Utensils size={15} />
+                  ) : null}
+                  {value}
+                </button>
+              ),
+            )}
           </div>
           <label className="search-field">
             <Search size={17} />

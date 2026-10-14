@@ -56,6 +56,11 @@ export function FoodCard({
           {food.name}
         </Link>
         <p className="food-card-reason">{assessment.reason}</p>
+        <ul className="recommendation-reasons" aria-label="Why this pick">
+          {item.reasons.slice(0, 2).map((reason) => (
+            <li key={reason}>{reason}</li>
+          ))}
+        </ul>
         <div className="food-card-nutrients">
           <span>
             <strong>{food.nutrients.energy ?? "—"}</strong>kcal

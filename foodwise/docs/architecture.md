@@ -4,6 +4,14 @@ Foodwise uses the Next.js App Router with React server pages, focused client com
 
 ## Request flow
 
+The nutrition-grade random forest remains independent of the TF-IDF recommendation
+model. `recommendation-model.ts` applies account restrictions before combining food
+similarity, explicit ratings, and nutrient goals. Candidate products come from the
+public catalog plus only the current owner's saved scans. Scan/detail responses include
+alternatives for members; guest responses contain general nutrient explanations only.
+Explanation sources travel with the assessment and are linked on the details page.
+Daily references are educational context; saved per-serving limits remain explicit user input.
+
 1. A route handler validates the request and resolves the session.
 2. Protected handlers reject guests before reading personal data or generating recommendations.
 3. A service performs product lookup, assessment, or recommendation ranking.

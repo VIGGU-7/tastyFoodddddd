@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { catalog } from "@/features/nutrition/domain/catalog";
-import { assess, rank } from "@/features/nutrition/domain/engine";
+import { assess } from "@/features/nutrition/domain/engine";
+import {
+  alternatives,
+  recommend,
+} from "@/features/nutrition/domain/recommendation-model";
 import {
   normalizeProduct,
   type ProductData,
@@ -19,7 +23,8 @@ const barcodeSchema = z
 export async function lookupFood(code: string): Promise<Food> {
   const barcode = barcodeSchema.parse(code);
   const cache = cachedProduct(barcode);
-  if (cache) return cache;
+  // Older cache entries lack the explicit serving basis needed for personal limit checks.
+  if (cache && cache.servingKnown !== undefined) return cache;
   let response: Response;
   try {
     response = await fetch(
@@ -58,22 +63,54 @@ export function userProfile(owner: string): Profile | null {
   const record = readRecords(owner).find((record) => record.kind === "profile");
   return record?.payload || null;
 }
-export function recommendations(owner: string) {
-  const records = readRecords(owner);
+/** Read a single owner's context; another user's scans never become candidates. */
+function recommendationContext(owner?: string) {
+  const records = owner ? readRecords(owner) : [];
   const profile =
     records.find((record) => record.kind === "profile")?.payload || null;
   const ratings = records
     .filter((record) => record.kind === "rating")
     .map((record) => record.payload);
-  return rank(catalog, profile, ratings);
+  const foods = new Map(catalog.map((food) => [food.id, food]));
+  // Records arrive newest first, so keep the most recent label for each scanned product.
+  for (const record of records) {
+    if (record.kind === "scan" && !foods.has(record.payload.food.id)) {
+      const scanned = record.payload.food;
+      foods.set(scanned.id, {
+        ...scanned,
+        servingKnown:
+          scanned.servingKnown ??
+          !scanned.serving.includes("serving size unavailable"),
+      });
+    }
+  }
+  return { profile, ratings, foods: [...foods.values()] };
+}
+export function recommendations(owner: string) {
+  const { foods, profile, ratings } = recommendationContext(owner);
+  return recommend(foods, profile, ratings);
 }
 export async function scanFood(code: string, owner?: string) {
   const food = await lookupFood(code);
-  const assessment = assess(food, owner ? userProfile(owner) : null);
+  const { foods, profile, ratings } = recommendationContext(owner);
+  const assessment = assess(food, profile);
   if (owner) saveRecord(owner, "scan", { food, assessment });
-  return { food, assessment };
+  return {
+    food,
+    assessment,
+    alternatives: owner
+      ? alternatives(food, foods, profile, ratings)
+      : undefined,
+  };
 }
 export async function foodDetails(id: string, owner?: string) {
   const food = catalog.find((food) => food.id === id) || (await lookupFood(id));
-  return { food, assessment: assess(food, owner ? userProfile(owner) : null) };
+  const { foods, profile, ratings } = recommendationContext(owner);
+  return {
+    food,
+    assessment: assess(food, profile),
+    alternatives: owner
+      ? alternatives(food, foods, profile, ratings)
+      : undefined,
+  };
 }

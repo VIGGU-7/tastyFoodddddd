@@ -34,7 +34,11 @@ export async function POST(req: Request) {
       .parse(await bodyJson(req));
     if (body.kind === "rating") {
       const rating = ratingSchema.parse(body.data);
-      if (!catalog.some((food) => food.id === rating.foodId))
+      const isOwnScan = readRecords(user.id).some(
+        (record) =>
+          record.kind === "scan" && record.payload.food.id === rating.foodId,
+      );
+      if (!catalog.some((food) => food.id === rating.foodId) && !isOwnScan)
         throw new HttpError(400, "Choose a food from the catalog.");
       saveRecord(
         user.id,

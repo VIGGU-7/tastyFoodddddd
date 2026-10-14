@@ -14,14 +14,17 @@ import {
 } from "@/components/ui/primitives";
 import type { FoodResult } from "@/shared/contracts";
 import { ScoreCard } from "./score-card";
+import { FoodAlternatives } from "@/features/discovery/alternatives";
 export function FoodDetails({
   food,
   assessment,
   signedIn,
+  alternatives = [],
 }: FoodResult & { signedIn: boolean }) {
   const nutrients = [
     { key: "energy", label: "Energy", unit: "kcal" },
     { key: "sugar", label: "Sugar", unit: "g" },
+    { key: "addedSugar", label: "Added sugar", unit: "g" },
     { key: "carbs", label: "Carbohydrates", unit: "g" },
     { key: "sodium", label: "Sodium", unit: "mg" },
     { key: "saturatedFat", label: "Saturated fat", unit: "g" },
@@ -66,7 +69,22 @@ export function FoodDetails({
                 overall nutrition grade.
               </p>
             )}
+            {!!assessment.references?.length && (
+              <ul
+                className="explanation-sources"
+                aria-label="Nutrition explanation sources"
+              >
+                {assessment.references.map(({ label, url }) => (
+                  <li key={url}>
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                      {label} ↗
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
+          {signedIn && <FoodAlternatives items={alternatives} />}
         </div>
         <div>
           <section className="panel nutrient-panel">

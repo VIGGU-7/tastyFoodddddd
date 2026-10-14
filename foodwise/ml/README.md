@@ -1,5 +1,25 @@
 # Nutrition-grade model
 
+The nutrition-grade pipeline is independent of personalization. To rebuild the separate
+content recommendation model, run `npm run train:recommendations` from `foodwise`.
+It fits a TF-IDF vocabulary on public catalog descriptions and writes only
+`src/features/nutrition/domain/recommendation-artifact.json`. The version includes a
+catalog digest, and repeated training on unchanged data is deterministic.
+User profiles, health fields, scans, and ratings are never training inputs.
+Inference builds each account's preference vector and uses only that account's tried-food
+ratings. This is content-based retrieval, not a supervised prediction of user preference;
+held-out preference accuracy is unavailable until real interaction data is collected.
+Rebuild the artifact when expanding the public catalog so new food terms are represented.
+
+Restrictions are checked before ranking. Nutrient goals use comparable 100 g quantities;
+unknown serving sizes cannot satisfy per-serving limits. Alternatives require a similar
+category or main ingredient, complete core nutrition and ingredients, and a concrete
+improvement. No eligible substitute returns an empty list rather than an unrelated food.
+
+Explanations use linked FDA daily label values (sodium, saturated fat, and added sugar)
+and NIH condition context. Total sugar has no FDA daily value and is never substituted
+for added sugar. Recorded conditions do not automatically prescribe personal targets.
+
 The checked-in artifact is a trained preliminary random forest. Accuracy: **75.0%** on 156 held-out products; macro F1: **0.640**; majority baseline: **46.8%**. The frozen sample contains 1,479 real products (938 training, 385 validation, 156 test). Grade B F1 is only 0.261 with 11 test products. The sample comes from a truncated prefix of the official dump and is not representative. `snapshot.json` records source, extraction, hashes, and selection limits; `metrics.json` records the complete evaluation. The training sample itself is ignored by Git.
 
 To train a new artifact, use internet access and Python 3.10–3.13 (the pinned scientific libraries were validated with Python 3.12):

@@ -3,7 +3,11 @@
 /.next/
 /out/
 /dist/
+/build/
 /coverage/
+/.cache/
+/.turbo/
+/.vercel/
 /*.tsbuildinfo
 /next-env.d.ts
 
@@ -15,6 +19,12 @@
 **/*.spec.*
 /playwright-report/
 /test-results/
+/htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 /ml/parity-fixtures.json
 
 # Runtime state, private data, and secrets
@@ -37,6 +47,7 @@
 /ml/data/
 __pycache__/
 *.pyc
+*.pyo
 
 # Local artifacts and editor files
 /outputs/

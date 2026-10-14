@@ -70,7 +70,12 @@ export function normalizeProduct(p: ProductData, barcode: string): Food {
     id: barcode,
     name: p.product_name || "Unnamed product",
     kind: "product",
-    category: (p.categories_tags?.[0] || "Packaged food").replace(/^en:/, ""),
+    // OFF categories run from broad groups to specific foods. Specific categories
+    // prevent unrelated products being treated as substitutes for one another.
+    category: (p.categories_tags?.at(-1) || "Packaged food").replace(
+      /^en:/,
+      "",
+    ),
     cuisine: "International",
     ingredients: p.ingredients_text ? [p.ingredients_text] : [],
     allergens,
@@ -87,9 +92,11 @@ export function normalizeProduct(p: ProductData, barcode: string): Food {
       ? `${p.serving_size || grams + " g"}`
       : "100 g (serving size unavailable)",
     grams: grams || 100,
+    servingKnown: !!grams,
     nutrients: {
       energy: nutrient("energy-kcal"),
       sugar: nutrient("sugars"),
+      addedSugar: nutrient("added-sugars"),
       carbs: nutrient("carbohydrates"),
       sodium:
         nutrient("sodium") !== undefined

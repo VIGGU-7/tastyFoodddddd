@@ -22,6 +22,7 @@ import {
 import { post } from "@/shared/api-client";
 import type { FoodResult } from "@/shared/contracts";
 import { ScoreCard } from "@/features/nutrition/score-card";
+import { FoodAlternatives } from "@/features/discovery/alternatives";
 import { useBarcodeCamera } from "./use-barcode-camera";
 export function Scanner({ signedIn }: { signedIn: boolean }) {
   const [code, setCode] = useState("");
@@ -230,6 +231,9 @@ export function Scanner({ signedIn }: { signedIn: boolean }) {
                 <span>Per {result.food.serving}</span>
               </div>
               <ScoreCard {...result} />
+              {signedIn && (
+                <FoodAlternatives items={result.alternatives || []} />
+              )}
               <ActionLink
                 href={`/why/${encodeURIComponent(result.food.id)}`}
                 variant="secondary"
